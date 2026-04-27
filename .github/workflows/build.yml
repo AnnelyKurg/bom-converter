@@ -1,0 +1,32 @@
+name: Build Windows EXE
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install pdfplumber openpyxl pyinstaller
+
+      - name: Build EXE
+        run: |
+          pyinstaller --onefile --windowed --name BOM_to_Excel bom_converter.py
+
+      - name: Upload EXE artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: BOM_to_Excel_Windows
+          path: dist/BOM_to_Excel.exe
+          retention-days: 30
