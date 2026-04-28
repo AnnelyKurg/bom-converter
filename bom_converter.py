@@ -156,7 +156,7 @@ def build_row(lr):
 
     code_name = ' '.join(lr.get('code_name_words', []))
     m = re.match(r'(\[[^\]]+\])\s*(.*)', code_name)
-    code = m.group(1) if m else ''
+    code = m.group(1).strip('[]') if m else ''
     name = m.group(2).strip() if m else code_name
 
     qty   = to_float(' '.join(lr.get('quantity_words', [])))
